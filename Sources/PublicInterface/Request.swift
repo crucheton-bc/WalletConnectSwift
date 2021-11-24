@@ -120,6 +120,26 @@ public class Request {
         }
     }
 
+    /// Return JSON object of the parameter at the given position.
+    public func parameterJson(at position: Int) throws -> String {
+        guard let params = payload.params else {
+            throw RequestError.parametersDoNotExist
+        }
+        switch params {
+        case .named:
+            throw RequestError.positionalParametersDoNotExist
+        case .positional(let values):
+            if position >= values.count {
+                throw RequestError.parameterPositionOutOfBounds
+            }
+            let data = try JSONEncoder.encoder().encode(values[position])
+            guard let string = String(data: data, encoding: .utf8) else {
+                throw DataConversionError.dataToStringFailed
+            }
+            return string
+        }
+    }
+
     internal func json() throws -> JSONRPC_2_0.JSON {
         return try payload.json()
     }
