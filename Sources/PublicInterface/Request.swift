@@ -19,12 +19,6 @@ public class Request {
         }
         return ""
     }
-    public var paramsJsonString: String {
-        if let str = try? paramsJson().string {
-            return str
-        }
-        return ""
-    }
 
     internal var internalID: JSONRPC_2_0.IDType? {
         return payload.id
@@ -142,10 +136,6 @@ public class Request {
 
     internal func json() throws -> JSONRPC_2_0.JSON {
         return try payload.json()
-    }
-
-    internal func paramsJson() throws -> JSONRPC_2_0.JSON {
-        return try payload.paramsJson()
     }
 }
 
