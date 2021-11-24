@@ -238,14 +238,6 @@ enum JSONRPC_2_0 {
             }
             return JSONRPC_2_0.JSON(string)
         }
-
-        func paramsJson() throws -> JSONRPC_2_0.JSON {
-            let data = try JSONEncoder.encoder().encode(params)
-            guard let string = String(data: data, encoding: .utf8) else {
-                throw DataConversionError.dataToStringFailed
-            }
-            return JSONRPC_2_0.JSON(string)
-        }
     }
 
     /// https://www.jsonrpc.org/specification#response_object
