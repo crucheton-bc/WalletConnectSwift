@@ -37,6 +37,17 @@ class JSONRPC_2_0_Tests: XCTestCase {
         XCTAssertEqual(walletInfo.chainId, restoredWalletInfo.chainId)
     }
 
+    func test_JSONRPC_Request_Params_Serialization_Decerialization() throws {
+        let req = try JSONRPC_2_0.Request.create(from: JSONRPC_2_0.JSON(JSONRPC_StubRequest.json1_Text))
+        XCTAssertEqual(req, JSONRPC_StubRequest.json1_Request)
+        let paramsJson = try JSONRPC_StubRequest.json1_Request.paramsJson()
+        guard let data = paramsJson.string.data(using: .utf8) else {
+            throw DataConversionError.stringToDataFailed
+        }
+        let params = try JSONDecoder().decode(JSONRPC_2_0.Request.Params.self, from: data)
+        XCTAssertEqual(req.params, params)
+    }
+
     func test_JSONRPC_Request_Serialization_Decerialization() throws {
         let req = try JSONRPC_2_0.Request.create(from: JSONRPC_2_0.JSON(JSONRPC_StubRequest.json1_Text))
         XCTAssertEqual(req, JSONRPC_StubRequest.json1_Request)
